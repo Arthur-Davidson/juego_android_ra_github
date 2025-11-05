@@ -14,30 +14,38 @@ import mx.uacj.juegora.ui.organismos.InformacionVista
 import java.security.Principal
 
 @Composable
-fun Principal(modificador: Modifier = Modifier) {
-    val miUbicacion = Location("proveedor").apply {
+fun Principal(ubicacion: Location?, modificador: Modifier = Modifier) {
+    /*val miUbicacion = Location("proveedor").apply {
         latitude = 31.7422298
         longitude = -106.4321442
-    }
+    }*/
     Column(modificador) {
         for (pista in RepositorioPruebas.pistas){
             Text("La pista es: ${pista.nombre}")
-            Text("La distancia a la pista es ${miUbicacion.distanceTo(pista.ubicacion)}")
+            Text("La distancia a la pista es ${ubicacion?.distanceTo(pista.ubicacion)}")
 
-            when(pista.cuerpo.tipo){
-                TiposPistas.texto -> {
-                    InformacionVista(pista.cuerpo as Informacion)
-                }
-                TiposPistas.interactiva -> {
-                    InformacionInteractivaVista(pista.cuerpo as InformacionInteractiva)
-                }
-                TiposPistas.camara -> {
-                    TODO()
-                }
-                TiposPistas.agitarTelefono -> {
-                    TODO()
-                }
+            if(ubicacion == null){
+                continue
             }
+
+            if(ubicacion.distanceTo(pista.ubicacion) < pista.distanciaMaxima){
+                when(pista.cuerpo.tipo){
+                    TiposPistas.texto -> {
+                        InformacionVista(pista.cuerpo as Informacion)
+                    }
+                    TiposPistas.interactiva -> {
+                        InformacionInteractivaVista(pista.cuerpo as InformacionInteractiva)
+                    }
+                    TiposPistas.camara -> {
+                        TODO()
+                    }
+                    TiposPistas.agitarTelefono -> {
+                        TODO()
+                    }
+                }
+
+            }
+
             Text("---------")
             if(pista.cuerpo.tipo == TiposPistas.texto){
                 InformacionVista(pista.cuerpo as Informacion)
