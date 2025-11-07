@@ -10,7 +10,7 @@ fun InformacionInteractivaVista(informacionInteractiva: InformacionInteractiva){
     Column {
         Text("${informacionInteractiva.texto}")
 
-        for (boton in informacionInteractiva.listaBotones){
+        for(boton in informacionInteractiva.listaBotones){
             Text("Boton para ir a ${boton.texto}")
         }
     }

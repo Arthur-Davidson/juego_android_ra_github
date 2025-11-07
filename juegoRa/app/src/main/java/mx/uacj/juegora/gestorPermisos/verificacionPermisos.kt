@@ -1,23 +1,20 @@
-package mx.uacj.juegora.gestorPermisos
+package mx.uacj.juegora.gestor_permisos
 
 import android.Manifest
-import androidx.collection.emptyObjectList
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.util.fastFilter
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.common.util.CollectionUtils.listOf
-import java.util.Collections.emptyList
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun ParaLaSolicitudDePermisos(
+fun ParaLaSolictudDePermisos(
     conPermisosObtenidos: () -> Unit,
     sinPermisosObtenidos: () -> Unit,
-    permisosRevocados: () -> Unit
+    conPermisosRevocados: () -> Unit
 ){
     val estadosPermisos = rememberMultiplePermissionsState(
         listOf(
@@ -25,40 +22,31 @@ fun ParaLaSolicitudDePermisos(
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
     ){ listaPermisos ->
-        var tenerPermisosObtenidos: Boolean = false // Variante bandera
+        var tengoTodosLosPermisos: Boolean = false // Variable bandera o flag
 
         for (permiso in listaPermisos.values){
             if(!permiso){
-                tenerPermisosObtenidos = false
+                tengoTodosLosPermisos = false
                 break
             }
-            else{
-                tenerPermisosObtenidos = true
+            else {
+                tengoTodosLosPermisos = true
             }
         }
 
-        if (tenerPermisosObtenidos){
+        if(tengoTodosLosPermisos){
             conPermisosObtenidos.invoke()
         }
-        else{
+        else {
             sinPermisosObtenidos.invoke()
         }
 
     }
 
     LaunchedEffect(key1 = estadosPermisos) {
-        val tenerPermisosRevocados = estadosPermisos.revokedPermissions.size == estadosPermisos.permissions.size
+        val tengoPermisosRevocados = estadosPermisos.revokedPermissions.size == estadosPermisos.permissions.size
 
         estadosPermisos.permissions
-
-        /*
-        var listaPermisosPorPedir: List<PermissionState> = emptyList<PermissionState>()
-
-        for(permiso in estadosPermisos.permissions){
-            if (!permiso.status.isGranted){
-                listaPermisosPorPedir.append(permiso)
-            }
-        }*/
 
         val listaPermisosPorPedir = estadosPermisos.permissions.fastFilter { permiso ->
             !permiso.status.isGranted
@@ -68,8 +56,8 @@ fun ParaLaSolicitudDePermisos(
             estadosPermisos.launchMultiplePermissionRequest()
         }
 
-        if (tenerPermisosRevocados){
-            permisosRevocados()
+        if(tengoPermisosRevocados){
+            conPermisosRevocados()
         }
         else {
             if(estadosPermisos.allPermissionsGranted){
@@ -79,6 +67,5 @@ fun ParaLaSolicitudDePermisos(
                 sinPermisosObtenidos()
             }
         }
-
     }
 }

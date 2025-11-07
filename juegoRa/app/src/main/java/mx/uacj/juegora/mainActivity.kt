@@ -13,7 +13,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,16 +25,16 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
-import dagger.hilt.EntryPoint
 import dagger.hilt.android.AndroidEntryPoint
-import mx.uacj.juegora.gestorPermisos.ParaLaSolicitudDePermisos
+import mx.uacj.juegora.gestor_permisos.ParaLaSolictudDePermisos
 import mx.uacj.juegora.ui.pantallas.Principal
 import mx.uacj.juegora.ui.theme.JuegoRATheme
 
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private lateinit var conexionParaObtenerUbicacion: FusedLocationProviderClient
 
-    private lateinit var conexionParaObtenerPermisos: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,117 +42,118 @@ class MainActivity : ComponentActivity() {
         setContent {
             JuegoRATheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    var textoUbicacion by remember { mutableStateOf("No tengo permisos para ver tu ubicacion") }
-                    var mostrarResultadoPermisos by remember { mutableStateOf(false) }
+
+                    var textoDeUbicacion by remember { mutableStateOf("No tengo permisos para ver tu ubicacion") }
+                    var mostrarResutladoDePermisos by remember { mutableStateOf(false) }
                     var textoPermisosObtenidos by remember { mutableStateOf("Todos los permisos obtenidos") }
 
-                    var  ultimaUbicacionConocida by remember { mutableStateOf<Location?>(null) }
+                    var ultimaUbicacionConocida by remember { mutableStateOf<Location?>(null) }
 
-                    ParaLaSolicitudDePermisos (
+                    ParaLaSolictudDePermisos(
                         conPermisosObtenidos = {
-                            mostrarResultadoPermisos = true
+                            mostrarResutladoDePermisos = true
 
                             obtenerUbicacionUsuario(
-                                cuando_obtenga_la_ultima_psoicion_corecta = { ubicacion ->
+                                cuandoObtengaLaUltimaPosicionCorrecta = { ubicacion ->
                                     Log.v("UBICACION", "${ubicacion.first}")
                                     Log.v("UBICACION", "${ubicacion.second}")
-                                    /*textoUbicacion = "Tu ubicacion es latitud: ${ubicacion.first} longitud: ${ubicacion.second}"*/
-                                    val ubicacionActual = Location("Sistema de ubicacion")
+
+                                    val ubicacionActual = Location("SistemaDeUbicacion")
                                     ubicacionActual.latitude = ubicacion.first
                                     ubicacionActual.longitude = ubicacion.second
 
                                     ultimaUbicacionConocida = ubicacionActual
                                 },
-                                cuando_falle_al_obtener_ubicacion = { errorEncontrado ->
-                                    textoUbicacion = "Error: ${errorEncontrado.localizedMessage}"
+                                cuandoFalleAlObtenerUbicacion = { errorEncontrado ->
+                                    textoDeUbicacion = "Error: ${errorEncontrado.localizedMessage}"
                                 },
-                                cuando_la_ultima_posicion_sea_nula = {
-                                    textoUbicacion = "Error: la ubicacion es nula"
+                                cuandoUltimaPosicionSeaNula = {
+                                    textoDeUbicacion = "Error: la ubicacion es nula por alguna razon"
                                 }
                             )
                         },
                         sinPermisosObtenidos = {
-                            mostrarResultadoPermisos = true
+                            mostrarResutladoDePermisos = true
                             textoPermisosObtenidos =
                                 "No tengo los permisos necesarios para funcionar"
                         }
                     ) {}
 
-                    /*Text(textoUbicacion, Modifier.padding(innerPadding))*/
-
-                    Principal (
+                    Principal(
                         modificador = Modifier.padding(innerPadding),
                         ubicacion = ultimaUbicacionConocida
-                        )
+                    )
 
                 }
             }
         }
     }
 
+
     @SuppressLint("MissingPermission")
     fun obtenerUbicacionUsuario(
-        cuando_obtenga_la_ultima_psoicion_corecta: (Pair<Double, Double>) -> Unit,
-        cuando_falle_al_obtener_ubicacion: (Exception) -> Unit,
-        cuando_la_ultima_posicion_sea_nula: () -> Unit
+        cuandoObtengaLaUltimaPosicionCorrecta: (Pair<Double, Double>) -> Unit,
+        cuandoFalleAlObtenerUbicacion: (Exception) -> Unit,
+        cuandoUltimaPosicionSeaNula: () -> Unit
     ){
-        conexionParaObtenerPermisos = LocationServices.getFusedLocationProviderClient(this)
+        conexionParaObtenerUbicacion = LocationServices.getFusedLocationProviderClient(this)
 
-        if(tenemos_los_permisos_de_ubicacion()){
-            conexionParaObtenerPermisos.lastLocation
+        if(tenemosPermisosUbicacion()){
+            conexionParaObtenerUbicacion.getCurrentLocation(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                CancellationTokenSource().token)
                 .addOnSuccessListener {ubicacion ->
                     if(ubicacion != null){
-                        cuando_obtenga_la_ultima_psoicion_corecta(Pair(ubicacion.latitude, ubicacion.longitude))
+                        cuandoObtengaLaUltimaPosicionCorrecta(Pair(ubicacion.latitude, ubicacion.longitude))
                     }
                     else {
-                        cuando_la_ultima_posicion_sea_nula()
+                        cuandoUltimaPosicionSeaNula()
                     }
                 }
                 .addOnFailureListener{ error ->
-                    cuando_falle_al_obtener_ubicacion(error)
+                    cuandoFalleAlObtenerUbicacion(error)
                 }
         }
     }
 
     @SuppressLint("MissingPermission")
-    fun obtener_ubicacion(
-        al_obtener_la_ubicacion: (Pair<Double, Double>) -> Unit,
-        al_obtener_un_error: (Exception) -> Unit,
+    fun obtenerUbicacion(
+        alObtenerUbicacion: (Pair<Double, Double>) -> Unit,
+        alObtenerAlgunError: (Exception) -> Unit,
         prioridad: Boolean = true
     ){
         val precision = if(prioridad) Priority.PRIORITY_HIGH_ACCURACY else Priority.PRIORITY_BALANCED_POWER_ACCURACY
 
-        if(tenemos_los_permisos_de_ubicacion()){
-            conexionParaObtenerPermisos.getCurrentLocation(
+        if(tenemosPermisosUbicacion()){
+            conexionParaObtenerUbicacion.getCurrentLocation(
                 precision, CancellationTokenSource().token
             ).addOnSuccessListener { ubicacion ->
                 if(ubicacion != null){
-                    al_obtener_la_ubicacion(Pair(ubicacion.latitude, ubicacion.longitude))
+                    alObtenerUbicacion(Pair(ubicacion.latitude, ubicacion.longitude))
                 }
             }
                 .addOnFailureListener{ error ->
-                    al_obtener_un_error(error)
+                    alObtenerAlgunError(error)
                 }
         }
 
     }
 
-    private fun tenemos_los_permisos_de_ubicacion(): Boolean{
-        return (ActivityCompat.checkSelfPermission(
-            this, Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED &&
+    private fun tenemosPermisosUbicacion(): Boolean{
+        return (
                 ActivityCompat.checkSelfPermission(
-                    this, Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
+                    this, Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            this, Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) == PackageManager.PERMISSION_GRANTED
                 )
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     JuegoRATheme {
-
     }
 }

@@ -1,56 +1,95 @@
 package mx.uacj.juegora.ui.pantallas
 
 import android.location.Location
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import mx.uacj.juegora.modelos.Informacion
 import mx.uacj.juegora.modelos.InformacionInteractiva
-import mx.uacj.juegora.modelos.TiposPistas
+import mx.uacj.juegora.modelos.TiposDePistas
 import mx.uacj.juegora.repositoriosEstaticos.RepositorioPruebas
 import mx.uacj.juegora.ui.organismos.InformacionInteractivaVista
 import mx.uacj.juegora.ui.organismos.InformacionVista
-import java.security.Principal
 
 @Composable
-fun Principal(ubicacion: Location?, modificador: Modifier = Modifier) {
-    /*val miUbicacion = Location("proveedor").apply {
-        latitude = 31.7422298
-        longitude = -106.4321442
-    }*/
-    Column(modificador) {
-        for (pista in RepositorioPruebas.pistas){
-            Text("La pista es: ${pista.nombre}")
-            Text("La distancia a la pista es ${ubicacion?.distanceTo(pista.ubicacion)}")
+fun Principal(ubicacion: Location?, modificador: Modifier = Modifier){
 
+    var mostrarPantallaGenerica by remember { mutableStateOf(true) }
+    var mostrarPistaCercana by remember { mutableStateOf(false) }
+
+    Column(modificador) {
+        for(pista in RepositorioPruebas.pistas){
             if(ubicacion == null){
-                continue
+                break
             }
 
-            if(ubicacion.distanceTo(pista.ubicacion) < pista.distanciaMaxima){
-                when(pista.cuerpo.tipo){
-                    TiposPistas.texto -> {
-                        InformacionVista(pista.cuerpo as Informacion)
+            var distanciaAPista = ubicacion.distanceTo(pista.ubicacion)
+
+            if(distanciaAPista < pista.distanciaMaxima){
+                mostrarPantallaGenerica = false
+                var nivelDeDistancia = (distanciaAPista * 100) / (pista.distanciaMaxima - pista.distanciaMinima)
+
+                Text("La pista es: ${pista.nombre}")
+                Text("el nivel de la distancia a la pista es ${nivelDeDistancia}")
+
+                if(nivelDeDistancia > 75){
+                    Text("Estas frio todavia")
+                }
+
+                else if (nivelDeDistancia > 50){
+                    Text("Te estas acercando")
+                }
+
+                else if(nivelDeDistancia > 25){
+                    Text("Muy cercas, sigue asi")
+                }
+
+                else if(nivelDeDistancia < 20 && !mostrarPistaCercana){
+                    Row(modifier = Modifier.fillMaxWidth().clickable {
+                        mostrarPistaCercana = true
+                    }){
+                        Text("Capturar pista cercana")
                     }
-                    TiposPistas.interactiva -> {
-                        InformacionInteractivaVista(pista.cuerpo as InformacionInteractiva)
-                    }
-                    TiposPistas.camara -> {
-                        TODO()
-                    }
-                    TiposPistas.agitarTelefono -> {
-                        TODO()
+                }
+
+                if(mostrarPistaCercana) {
+                    when (pista.cuerpo.tipo) {
+                        TiposDePistas.texto -> {
+                            InformacionVista(pista.cuerpo as Informacion)
+                        }
+
+                        TiposDePistas.interactiva -> {
+                            InformacionInteractivaVista(pista.cuerpo as InformacionInteractiva)
+                        }
+
+                        TiposDePistas.camara -> {
+                            TODO()
+                        }
+
+                        TiposDePistas.agitarTelefono -> {
+                            TODO()
+                        }
                     }
                 }
 
             }
-
-            Text("---------")
-            if(pista.cuerpo.tipo == TiposPistas.texto){
-                InformacionVista(pista.cuerpo as Informacion)
-            }
         }
+    }
+
+    if(mostrarPantallaGenerica){
+        Column(modificador) {
+            Text("No te encuentras cercas de alguna pista por el momento ")
+            Text("Por favor sigue explorando  ")
+        }
+
     }
 
 }

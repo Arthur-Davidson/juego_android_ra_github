@@ -1,8 +1,8 @@
 package mx.uacj.juegora.modelos
 
-enum class TiposPistas{
+enum class TiposDePistas{
     texto,
-    interactiva, // Esta es la pantalla con uno o mas botones
+    interactiva, // Esta sera la pantalla con uno o mas botones
     camara,
     agitarTelefono
 }

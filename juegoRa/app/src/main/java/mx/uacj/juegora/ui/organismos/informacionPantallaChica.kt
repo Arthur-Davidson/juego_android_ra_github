@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import mx.uacj.juegora.modelos.Informacion
 
 @Composable
-fun InformacionVista(informacionAMostrar: Informacion){
+fun InformacionVista(informacionMostrar: Informacion){
     Column {
-        Text(informacionAMostrar.texto)
+        Text(informacionMostrar.texto)
     }
 }

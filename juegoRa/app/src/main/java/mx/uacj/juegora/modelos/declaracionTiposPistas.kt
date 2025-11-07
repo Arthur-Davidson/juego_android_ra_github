@@ -1,15 +1,14 @@
 package mx.uacj.juegora.modelos
 
 public interface PistaGenerica{
-    val tipo: TiposPistas
+    val tipo: TiposDePistas
     val texto: String?
 }
 
 data class Informacion( // Es la pista con solo texto y posiblemente una imagen
-    override val tipo: TiposPistas = TiposPistas.texto,
+    override val tipo: TiposDePistas = TiposDePistas.texto,
     override val texto: String,
-    val image: String? = null
-
+    val imagen: String? = null
 ) : PistaGenerica
 
 data class Boton(
@@ -18,7 +17,7 @@ data class Boton(
 )
 
 data class InformacionInteractiva(
-    override val tipo: TiposPistas = TiposPistas.interactiva,
+    override val tipo: TiposDePistas = TiposDePistas.interactiva,
     override val texto: String?,
     val listaBotones: List<Boton>
-): PistaGenerica
+) : PistaGenerica
