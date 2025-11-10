@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.util.Pair
 import androidx.activity.ComponentActivity
@@ -21,22 +22,39 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
 import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.lifecycle.HiltViewModel
 import mx.uacj.juegora.gestor_permisos.ParaLaSolictudDePermisos
 import mx.uacj.juegora.ui.pantallas.Principal
 import mx.uacj.juegora.ui.theme.JuegoRATheme
+import mx.uacj.juegora.viewModels.GestorUbicacion
+import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private lateinit var conexionParaObtenerUbicacion: FusedLocationProviderClient
+    private lateinit var puenteParaRecibirActualizaciones : LocationCallback
 
+    private var ubicacionActual = Location("juegoRa")
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        puenteParaRecibirActualizaciones = object: LocationCallback(){
+            override fun onLocationResult(ubicaciones: LocationResult) {
+                for(ubicacion in ubicaciones.locations){
+                    actualizarUbicacion(ubicacion)
+                }
+            }
+        }
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -47,22 +65,17 @@ class MainActivity : ComponentActivity() {
                     var mostrarResutladoDePermisos by remember { mutableStateOf(false) }
                     var textoPermisosObtenidos by remember { mutableStateOf("Todos los permisos obtenidos") }
 
-                    var ultimaUbicacionConocida by remember { mutableStateOf<Location?>(null) }
+                    var gestorUbicacion: GestorUbicacion = hiltViewModel()
+
+                    //var ultimaUbicacionConocida by remember { mutableStateOf<Location?>(null) }
 
                     ParaLaSolictudDePermisos(
                         conPermisosObtenidos = {
                             mostrarResutladoDePermisos = true
 
                             obtenerUbicacionUsuario(
-                                cuandoObtengaLaUltimaPosicionCorrecta = { ubicacion ->
-                                    Log.v("UBICACION", "${ubicacion.first}")
-                                    Log.v("UBICACION", "${ubicacion.second}")
-
-                                    val ubicacionActual = Location("SistemaDeUbicacion")
-                                    ubicacionActual.latitude = ubicacion.first
-                                    ubicacionActual.longitude = ubicacion.second
-
-                                    ultimaUbicacionConocida = ubicacionActual
+                                cuandoObtengaLaUltimaPosicionCorrecta = {
+                                    gestorUbicacion.actualizarUbicacionActual(ubicacionActual.value)
                                 },
                                 cuandoFalleAlObtenerUbicacion = { errorEncontrado ->
                                     textoDeUbicacion = "Error: ${errorEncontrado.localizedMessage}"
@@ -81,7 +94,7 @@ class MainActivity : ComponentActivity() {
 
                     Principal(
                         modificador = Modifier.padding(innerPadding),
-                        ubicacion = ultimaUbicacionConocida
+                        ubicacion = ubicacionActual.value
                     )
 
                 }
@@ -89,6 +102,10 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    fun actualizarUbicacion(ubicacion:Location){
+        Log.wtf("UBICACION", "ubicacion actual ${ubicacion}")
+        ubicacionActual = ubicacion
+    }
 
     @SuppressLint("MissingPermission")
     fun obtenerUbicacionUsuario(
@@ -99,6 +116,18 @@ class MainActivity : ComponentActivity() {
         conexionParaObtenerUbicacion = LocationServices.getFusedLocationProviderClient(this)
 
         if(tenemosPermisosUbicacion()){
+            val constructorDelPuenteParaUbicacion = LocationRequest
+                .Builder(TimeUnit.SECONDS.toMillis(5))
+                .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+                .build()
+            //constructorDelPuenteParaUbicacion.priority = Priority.PRIORITY_HIGH_ACCURACY
+
+            conexionParaObtenerUbicacion.requestLocationUpdates(
+                constructorDelPuenteParaUbicacion,
+                puenteParaRecibirActualizaciones,
+                Looper.getMainLooper()
+            )
+
             conexionParaObtenerUbicacion.getCurrentLocation(
                 Priority.PRIORITY_HIGH_ACCURACY,
                 CancellationTokenSource().token)

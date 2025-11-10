@@ -1,4 +1,4 @@
-package mx.uacj.juegora.repositoriosEstaticos
+package mx.uacj.juegora.repositoriosEstaticos.estaticos.estaticos
 
 import android.location.Location
 import mx.uacj.juegora.modelos.Boton

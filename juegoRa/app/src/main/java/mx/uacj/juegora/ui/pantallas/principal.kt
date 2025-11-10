@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import mx.uacj.juegora.modelos.Informacion
 import mx.uacj.juegora.modelos.InformacionInteractiva
 import mx.uacj.juegora.modelos.TiposDePistas
-import mx.uacj.juegora.repositoriosEstaticos.RepositorioPruebas
+import mx.uacj.juegora.repositoriosEstaticos.estaticos.estaticos.RepositorioPruebas
 import mx.uacj.juegora.ui.organismos.InformacionInteractivaVista
 import mx.uacj.juegora.ui.organismos.InformacionVista
 
