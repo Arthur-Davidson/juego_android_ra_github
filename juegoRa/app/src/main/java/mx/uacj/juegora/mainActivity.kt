@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var conexionParaObtenerUbicacion: FusedLocationProviderClient
     private lateinit var puenteParaRecibirActualizaciones : LocationCallback
 
-    private var ubicacionActual = Location("juegoRa")
+    private var ubicacionActual = mutableStateOf<Location>(Location("juegoRa"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         puenteParaRecibirActualizaciones = object: LocationCallback(){
@@ -104,7 +104,7 @@ class MainActivity : ComponentActivity() {
 
     fun actualizarUbicacion(ubicacion:Location){
         Log.wtf("UBICACION", "ubicacion actual ${ubicacion}")
-        ubicacionActual = ubicacion
+        ubicacionActual.value = ubicacion
     }
 
     @SuppressLint("MissingPermission")
