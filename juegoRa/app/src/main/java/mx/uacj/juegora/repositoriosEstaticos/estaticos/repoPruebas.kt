@@ -20,7 +20,7 @@ object RepositorioPruebas{
         )
     ),
         Pista(
-            nombre = "pista_2", // Cercas del edificio H
+            nombre = "pista_2", // Cercas del edificio H1
             ubicacion = Location("proveedor").apply {
                 latitude = 31.742644
                 longitude = -106.4313187

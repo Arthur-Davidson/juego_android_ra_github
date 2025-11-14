@@ -1,6 +1,5 @@
 package mx.uacj.juegora.viewModels
 
-import androidx.compose.runtime.sourceInformation
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import mx.uacj.juegora.modelos.Pista

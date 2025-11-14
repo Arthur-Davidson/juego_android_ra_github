@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import mx.uacj.juegora.modelos.Informacion
 import mx.uacj.juegora.modelos.InformacionInteractiva
 import mx.uacj.juegora.modelos.TiposDePistas
@@ -38,7 +39,7 @@ import mx.uacj.juegora.ui.organismos.InformacionVista
 import mx.uacj.juegora.viewModels.GestorUbicacion
 
 @Composable
-fun Principal(modificador: Modifier = Modifier, gestor_ubicacion: GestorUbicacion = hiltViewModel()){
+fun Principal(navegador: NavHostController modificador: Modifier = Modifier, gestor_ubicacion: GestorUbicacion = hiltViewModel()){
 
     var mostrar_pantalla_generica by remember { mutableStateOf(true) }
     var mostrar_pista_cercana by remember { mutableStateOf(false) }
@@ -104,25 +105,10 @@ fun Principal(modificador: Modifier = Modifier, gestor_ubicacion: GestorUbicacio
                     }
                 }
 
-                if(mostrar_pista_cercana) {
-                    when (pista.cuerpo.tipo) {
-                        TiposDePistas.texto -> {
-                            InformacionVista(pista.cuerpo as Informacion)
-                        }
+                else if (distancia_a_la_pista < pista.distancia_minima) {
 
-                        TiposDePistas.interactiva -> {
-                            InformacionInteractivaVista(pista.cuerpo as InformacionInteractiva)
-                        }
-
-                        TiposDePistas.camara -> {
-                            TODO()
-                        }
-
-                        TiposDePistas.agitar_telefono -> {
-                            TODO()
-                        }
-                    }
                 }
+
 
             }
         }
