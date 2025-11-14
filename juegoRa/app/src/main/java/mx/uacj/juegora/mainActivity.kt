@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var conexion_para_obtener_ubicacion: FusedLocationProviderClient
     private lateinit var puente_para_recivir_updates_ubicacion: LocationCallback
 
-    private var ubicacion_actual = mutableStateOf<Location>(Location("juego_ra"))
+    private var ubicacion_actual = mutableStateOf<Location>(Location("juegoRa"))
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
