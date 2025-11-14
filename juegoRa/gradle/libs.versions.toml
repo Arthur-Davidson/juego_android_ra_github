@@ -1,5 +1,6 @@
 [versions]
 agp = "8.8.0"
+cameraCore = "1.6.0-alpha01" # Camera core
 kotlin = "2.2.10" # Actualice el lenguaje para poder usar KSP
 coreKtx = "1.10.1"
 junit = "4.13.2"
@@ -61,6 +62,12 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 # Libreria para descargar los archivos necesarios para Navigation Compsoe
 androidx-navigation-compose-android = { group = "androidx.navigation", name = "navigation-compose-android", version.ref = "navigationComposeAndroid" }
 
+# Para integrar la camara y sus derivados
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCore" }
+androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraCore" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraCore" }
+androidx-camera-video = { module = "androidx.camera:camera-video", version.ref = "cameraCore" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "cameraCore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

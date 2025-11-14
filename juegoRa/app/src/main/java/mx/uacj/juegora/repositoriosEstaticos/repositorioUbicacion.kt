@@ -1,27 +1,27 @@
-package mx.uacj.juegora.repositoriosEstaticos.estaticos
+package mx.uacj.juegora.repositoriosEstaticos
 
-
-import android.location.Location
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
+import android.location.Location
+import androidx.compose.runtime.mutableStateOf
 
 @Module
 @InstallIn(SingletonComponent::class)
-object repositorioUbicacionSingleton{
+object repositorio_ubicacion_singleton{
     @Provides
     @Singleton
-    fun creaRepositorioGestorDeUbicacion(): RepositorioUbicacion {
+    fun crea_repostiorio_gestor_de_ubicacion(): RepositorioUbicacion{
         return InstanciaRepositorioUbicacion()
     }
 }
 
+
 class InstanciaRepositorioUbicacion(
-    override val ubicacion: MutableState<Location> = mutableStateOf(Location("juegoRa"))
+    override val ubicacion: MutableState<Location> = mutableStateOf(Location("juego_ra"))
 ): RepositorioUbicacion {}
 
 interface RepositorioUbicacion {

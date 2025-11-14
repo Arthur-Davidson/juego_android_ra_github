@@ -1,70 +1,83 @@
 package mx.uacj.juegora.gestor_permisos
 
 import android.Manifest
+import androidx.collection.emptyObjectList
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.util.fastFilter
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.common.util.CollectionUtils.listOf
+import java.util.Collections.emptyList
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ParaLaSolictudDePermisos(
-    conPermisosObtenidos: () -> Unit,
-    sinPermisosObtenidos: () -> Unit,
-    conPermisosRevocados: () -> Unit
+    con_permisos_obtenidos: () -> Unit,
+    sin_permisos_obtenidos: () -> Unit,
+    con_permisos_revocados: () -> Unit
 ){
-    val estadosPermisos = rememberMultiplePermissionsState(
+    val estado_de_los_permisos = rememberMultiplePermissionsState(
         listOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
-    ){ listaPermisos ->
-        var tengoTodosLosPermisos: Boolean = false // Variable bandera o flag
+    ){ lista_permisos ->
+        var tengo_todos_los_permisos: Boolean = false // Variable bandera o flag
 
-        for (permiso in listaPermisos.values){
+        for (permiso in lista_permisos.values){
             if(!permiso){
-                tengoTodosLosPermisos = false
+                tengo_todos_los_permisos = false
                 break
             }
             else {
-                tengoTodosLosPermisos = true
+                tengo_todos_los_permisos = true
             }
         }
 
-        if(tengoTodosLosPermisos){
-            conPermisosObtenidos.invoke()
+        if(tengo_todos_los_permisos){
+            con_permisos_obtenidos.invoke()
         }
         else {
-            sinPermisosObtenidos.invoke()
+            sin_permisos_obtenidos.invoke()
         }
 
     }
 
-    LaunchedEffect(key1 = estadosPermisos) {
-        val tengoPermisosRevocados = estadosPermisos.revokedPermissions.size == estadosPermisos.permissions.size
+    LaunchedEffect(key1 = estado_de_los_permisos) {
+        val tengo_los_permisos_revocados = estado_de_los_permisos.revokedPermissions.size == estado_de_los_permisos.permissions.size
 
-        estadosPermisos.permissions
+        estado_de_los_permisos.permissions
 
-        val listaPermisosPorPedir = estadosPermisos.permissions.fastFilter { permiso ->
+        /*
+        var lista_de_permisos_por_pedir: MutableList<PermissionState> = emptyList<PermissionState>()
+
+        for(permiso in estado_de_los_permisos.permissions){
+            if(!permiso.status.isGranted){
+                lista_de_permisos_por_pedir.add(permiso)
+            }
+        }
+        */
+
+        val lista_de_permisos_por_pedir = estado_de_los_permisos.permissions.fastFilter { permiso ->
             !permiso.status.isGranted
         }
 
-        if(!listaPermisosPorPedir.isEmpty()){
-            estadosPermisos.launchMultiplePermissionRequest()
+        if(!lista_de_permisos_por_pedir.isEmpty()){
+            estado_de_los_permisos.launchMultiplePermissionRequest()
         }
 
-        if(tengoPermisosRevocados){
-            conPermisosRevocados()
+        if(tengo_los_permisos_revocados){
+            con_permisos_revocados()
         }
         else {
-            if(estadosPermisos.allPermissionsGranted){
-                conPermisosObtenidos()
+            if(estado_de_los_permisos.allPermissionsGranted){
+                con_permisos_obtenidos()
             }
             else {
-                sinPermisosObtenidos()
+                sin_permisos_obtenidos()
             }
         }
     }

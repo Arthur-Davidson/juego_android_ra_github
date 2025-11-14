@@ -89,6 +89,16 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.3.0")
     implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha") // permisos con cualquier cosa
 
+    //Libreria para AndroidCameraX
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
+    // If you want to additionally use the CameraX Lifecycle library
+    implementation(libs.androidx.camera.lifecycle)
+    // If you want to additionally use the CameraX VideoCapture library
+    implementation(libs.androidx.camera.video)
+    // If you want to additionally use the CameraX View class
+    implementation(libs.androidx.camera.view)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

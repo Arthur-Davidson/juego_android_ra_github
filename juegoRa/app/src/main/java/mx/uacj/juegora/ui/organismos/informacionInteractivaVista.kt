@@ -6,11 +6,11 @@ import androidx.compose.runtime.Composable
 import mx.uacj.juegora.modelos.InformacionInteractiva
 
 @Composable
-fun InformacionInteractivaVista(informacionInteractiva: InformacionInteractiva){
+fun InformacionInteractivaVista(informacion_interactiva: InformacionInteractiva){
     Column {
-        Text("${informacionInteractiva.texto}")
+        Text("${informacion_interactiva.texto}")
 
-        for(boton in informacionInteractiva.listaBotones){
+        for(boton in informacion_interactiva.lista_de_botones){
             Text("Boton para ir a ${boton.texto}")
         }
     }
