@@ -2,6 +2,7 @@ package mx.uacj.juegora.repositoriosEstaticos.estaticos
 
 import android.location.Location
 import androidx.collection.objectListOf
+import mx.uacj.juegora.R
 import mx.uacj.juegora.modelos.Boton
 import mx.uacj.juegora.modelos.Informacion
 import mx.uacj.juegora.modelos.InformacionInteractiva
@@ -16,11 +17,11 @@ object RepositorioPruebas{
         },
         cuerpo = Informacion(
             texto = "Prueba de texto para comprobar esto pista 1",
-            imagen = null
+            imagen = R.drawable.imagen1
         )
     ),
         Pista(
-            nombre = "pista_2", // Cercas del edificio H1
+            nombre = "pista_2", // Cercas del edificio de H1
             ubicacion = Location("proveedor").apply {
                 latitude = 31.742644
                 longitude = -106.4313187
@@ -31,7 +32,7 @@ object RepositorioPruebas{
             )
         ),
         Pista(
-            nombre = "pista_3", // Atras del edificio Z
+            nombre = "pista_3", // Atras del edificio del Z
             ubicacion = Location("proveedor").apply {
                 latitude = 31.744064
                 longitude = -106.4331397
@@ -51,11 +52,11 @@ object RepositorioPruebas{
                 lista_de_botones = listOf(
                     Boton(
                         texto = "Ir a pantalla 1",
-                        direccion = null
+                        direccion = "pista_1"
                     ),
                     Boton(
                         texto = "Ir a pantalla dos",
-                        direccion = null
+                        direccion = "pista_2"
                     )
                 )
             )

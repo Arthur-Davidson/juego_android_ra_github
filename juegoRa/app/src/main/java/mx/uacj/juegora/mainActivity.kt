@@ -49,6 +49,7 @@ import mx.uacj.juegora.ui.controladores.NavegadorPrincipal
 import mx.uacj.juegora.ui.pantallas.Principal
 import mx.uacj.juegora.ui.theme.JuegoRATheme
 import mx.uacj.juegora.viewModels.GestorUbicacion
+import mx.uacj.juegora.viewModels.servicios.ServicioCamara
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
@@ -57,6 +58,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var puente_para_recivir_updates_ubicacion: LocationCallback
 
     private var ubicacion_actual = mutableStateOf<Location>(Location("juegoRa"))
+    private var servicio_de_camara = ServicioCamara()
 
 
 

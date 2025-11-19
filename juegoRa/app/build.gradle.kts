@@ -98,7 +98,8 @@ dependencies {
     implementation(libs.androidx.camera.video)
     // If you want to additionally use the CameraX View class
     implementation(libs.androidx.camera.view)
-    //implementation(libs.androidx.camera.compose)
+
+    implementation(libs.androidx.camera.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -12,14 +12,19 @@ fun InformacionVista(informacion_a_mostrar: Informacion){
     Column {
         Text(informacion_a_mostrar.texto)
 
-        if (informacion_a_mostrar.imagen != null) {
+        if(informacion_a_mostrar.imagen != null){
             Image(
-                painter =  painterResource(informacion_a_mostrar.imagen),
+                painter = painterResource(informacion_a_mostrar.imagen),
                 contentDescription = "Imagen de la pista"
             )
         }
         /*
-
-        * */
+        informacion_a_mostrar.imagen?.let {
+            Image(
+                painter = painterResource(informacion_a_mostrar.imagen),
+                contentDescription = "Imagen de la pista"
+            )
+        }
+        */
     }
 }
