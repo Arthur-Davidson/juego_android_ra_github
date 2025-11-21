@@ -10,10 +10,10 @@ import mx.uacj.juegora.modelos.Pista
 
 object RepositorioPruebas{
     var pistas = listOf(Pista(
-        nombre = "pista_1", // Atrasito del edificio C
+        nombre = "Atras del edificio C ", // Atrasito del edificio C
         ubicacion = Location("proveedor").apply {
-            latitude = 31.7424889
-            longitude = -106.4320521
+            latitude = 31.7424
+            longitude = -106.4319
         },
         cuerpo = Informacion(
             texto = "Prueba de texto para comprobar esto pista 1",
@@ -21,7 +21,7 @@ object RepositorioPruebas{
         )
     ),
         Pista(
-            nombre = "pista_2", // Cercas del edificio de H1
+            nombre = "Cercas del edificio de H1", // Cercas del edificio de H1
             ubicacion = Location("proveedor").apply {
                 latitude = 31.742644
                 longitude = -106.4313187
@@ -32,7 +32,7 @@ object RepositorioPruebas{
             )
         ),
         Pista(
-            nombre = "pista_3", // Atras del edificio del Z
+            nombre = "Atras del edificio del Z", // Atras del edificio del Z
             ubicacion = Location("proveedor").apply {
                 latitude = 31.744064
                 longitude = -106.4331397

@@ -57,15 +57,15 @@ fun Principal(
 
         var ubicacion = gestor_ubicacion.ubicacion_actual
 
-        // Valor de LPM visible en la barra superior
+        // Valor de BPM visible en la barra superior
         var nivel_de_distancia by remember { mutableStateOf(0f) }
 
         // BARRA SUPERIOR
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(110.dp)
-                .background(Color(0xFF200878))
+                .height(130.dp)
+                .background(Color(0xFF0C2345))
                 .padding(10.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -73,7 +73,7 @@ fun Principal(
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
                 Text(
-                    text = "LPM: ${nivel_de_distancia.toInt() + 60}",
+                    text = "BPM: ${nivel_de_distancia.toInt() + 60}",
                     color = Color.White,
                     fontSize = 25.sp,
                     fontWeight = FontWeight.Bold
@@ -82,10 +82,15 @@ fun Principal(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "Ubicación actual: ${ubicacion.value}",
-                    color = Color.White,
+                    text = "Ubicación actual:",
+                    color = Color(0xFF7DDCFF),
                     fontSize = 17.sp,
                     fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "${ubicacion.value}",
+                    color = Color.White,
+                    fontSize = 15.sp,
                 )
             }
         }
@@ -110,51 +115,69 @@ fun Principal(
 
                     mostrar_pantalla_generica = false
 
-                    // Actualiza Latidos por minuto real
+                    // Actualiza Latidos por minuto
                     nivel_de_distancia = (distancia_a_la_pista * 100) /
                             (pista.distancia_maxima - pista.distancia_minima)
 
-                    // ----------- CONTENEDOR DE PISTAS ----------- //
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color(0xFF074D66),shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
-                            .padding(12.dp)
-                            .padding(bottom = 10.dp)
 
-                    ) {
+                    if (nivel_de_distancia < 70){
 
-                        Text("La distancia a la pista es: ${distancia_a_la_pista}", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
-                        Text("La pista es: ${pista.nombre}", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
-                        Text("el nivel de la distancia a la pista es ${nivel_de_distancia}", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
+                        // ----------- CONTENEDOR DE PISTAS ----------- //
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color(0xFF074D66),shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                                .padding(12.dp)
+                                .padding(bottom = 10.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
 
-                        if(nivel_de_distancia > 75){
-                            Text("Estas frio todavia", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
-                        }
-                        else if (nivel_de_distancia > 50){
-                            Text("Te estas acercando", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
-                        }
-                        else if(nivel_de_distancia > 25){
-                            Text("Muy cercas, sigue asi", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
-                        }
-                        else if(distancia_a_la_pista < pista.distancia_minima) {
+                            Text("La pista es:", color = Color(0xFFD4FFF4),fontSize = 19.sp, fontWeight = FontWeight.Bold)
+                            Text("${pista.nombre}", color = Color.White,fontSize = 19.sp, fontWeight = FontWeight.Bold)
 
-                            Row(
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text("La distancia a la pista es: ${distancia_a_la_pista}", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
+                            Text("el nivel de la distancia a la pista es ${nivel_de_distancia}", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .background(Color(0xFF074D66),shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
-                                    .padding(12.dp)
-                                    .padding(bottom = 10.dp)
-                                    .clickable {
-                                        navegador.navigate("SelectorPantallaPista")
-                                        controlador_general.seleccionar_pista(pista)
-                                    }
+                                    .background(Color(0xFFD4FFF4),shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)),
+                                contentAlignment = Alignment.Center
                             ){
-                                Text("Capturar pista cercana", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
-                            }
-                        }
+                                if(nivel_de_distancia > 100){
+                                    Text("Estas frio todavia", color = Color(0xFF074D66), fontWeight = FontWeight.Bold, modifier = Modifier.padding(12.dp))
+                                }
+                                else if (nivel_de_distancia > 30){
+                                    Text("Te estas acercando", color = Color(0xFFA8A202), fontWeight = FontWeight.Bold, modifier = Modifier.padding(12.dp))
+                                }
+                                else if(nivel_de_distancia > 10){
+                                    Text("Muy cercas, sigue asi", color = Color(0xFF02A826), fontWeight = FontWeight.Bold, modifier = Modifier.padding(12.dp))
+                                }
+                                else if(distancia_a_la_pista < pista.distancia_minima) {
 
-                    } // FIN CONTENEDOR PISTA
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .background(Color(0xFF94BDFF),shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                                            .padding(12.dp)
+                                            .clickable {
+                                                navegador.navigate("SelectorPantallaPista")
+                                                controlador_general.seleccionar_pista(pista)
+                                            },
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    )
+                                    {
+                                        Text("Capturar pista cercana", color = Color.White, fontWeight = FontWeight.Bold)
+                                    }
+                                }
+                            }
+
+                        } // FIN CONTENEDOR PISTA
+                    }
 
                     Spacer(modifier = Modifier.height(8.dp))
                 }
@@ -166,10 +189,10 @@ fun Principal(
                         .fillMaxWidth()
                         .background(Color(0xFF7C1004),shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
                         .padding(12.dp)
-                        .padding(bottom = 10.dp)
-
+                        .padding(bottom = 10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ){
-                    Text("No te encuentras cercas de alguna pista por el momento ", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
+                    Text("No te encuentras cercas de alguna pista por el momento ", color = Color(0xFF7A0B0BL), fontWeight = FontWeight.Bold)
                     Text("Por favor sigue explorando", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
                 }
             }
@@ -180,7 +203,7 @@ fun Principal(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(150.dp)
-                .background(Color(0xFF200878))
+                .background(Color(0xFF0C2345))
                 .padding(15.dp),
             contentAlignment = Alignment.Center
         ) {
