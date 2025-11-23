@@ -22,4 +22,18 @@ data class InformacionInteractiva(
     val lista_de_botones: List<Boton>
 ) : PistaGenerica
 
+data class InformacionAudio(
+    override val tipo: TiposDePistas = TiposDePistas.audio,
+    override val texto: String? = null
+) : PistaGenerica
+
+data class InformacionAgitar(
+    override val tipo: TiposDePistas = TiposDePistas.agitar_telefono,
+    val textoOculto: String,
+    val meta1: Int = 5,
+    val meta2: Int = 10,
+) : PistaGenerica {
+    override val texto: String? = null
+}
+
 

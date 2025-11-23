@@ -6,8 +6,11 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import mx.uacj.juegora.modelos.Informacion
+import mx.uacj.juegora.modelos.InformacionAgitar
 import mx.uacj.juegora.modelos.InformacionInteractiva
 import mx.uacj.juegora.modelos.TiposDePistas
+import mx.uacj.juegora.ui.atomos.VistaAgitarTelefono
+import mx.uacj.juegora.ui.organismos.InformacionAudioVista
 import mx.uacj.juegora.ui.organismos.InformacionInteractivaVista
 import mx.uacj.juegora.ui.organismos.InformacionVista
 import mx.uacj.juegora.viewModels.ControladorGeneral
@@ -31,8 +34,16 @@ fun SeleccionarPantallaPista(navegador: NavHostController, modificador: Modifier
         }
 
         TiposDePistas.agitar_telefono -> {
-            TODO()
+            val infoAgitar = pista_actual!!.cuerpo as InformacionAgitar
+            VistaAgitarTelefono(info = infoAgitar)
         }
+
+        TiposDePistas.audio -> {
+            InformacionAudioVista(
+                texto = pista_actual!!.cuerpo.texto ?: ""
+            )
+        }
+
 
     }
 }

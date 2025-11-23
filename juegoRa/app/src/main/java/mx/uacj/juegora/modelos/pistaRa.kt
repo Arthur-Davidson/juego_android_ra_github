@@ -3,11 +3,14 @@ package mx.uacj.juegora.modelos
 import android.location.Location
 
 data class Pista(
-    var nombre: String,
-    var ubicacion: Location,
-    var distancia_minima: Float = 15F,
-    var distancia_maxima: Float = 150F,
-    var cuerpo: PistaGenerica
+    val id: Int, // nuevo
+    val nombre: String,
+    val ubicacion: Location,
+    val cuerpo: PistaGenerica,
+    var completada: Boolean = false, // nueva propiedad
+    val distancia_minima: Float = 15f,
+    val distancia_maxima: Float = 150f
 )
+
 
 

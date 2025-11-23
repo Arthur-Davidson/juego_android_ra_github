@@ -1,6 +1,7 @@
 package mx.uacj.juegora.viewModels
 
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.sourceInformation
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,7 @@ class ControladorGeneral @Inject constructor(
 )  : ViewModel()  {
 
     var pista_actual: State<Pista?> = infomracion_general.pista_seleccionada
-
+    var bienvenidaMostrada = mutableStateOf(false)
     fun seleccionar_pista(pista: Pista){
         infomracion_general.pista_seleccionada.value = pista
     }
@@ -34,3 +35,5 @@ class ControladorGeneral @Inject constructor(
         infomracion_general.pistas_identificadas.value
     }
 }
+
+
