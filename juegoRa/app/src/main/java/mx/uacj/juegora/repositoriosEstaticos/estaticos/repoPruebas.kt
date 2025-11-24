@@ -35,7 +35,7 @@ object RepositorioPruebas {
             },
             cuerpo = Informacion(
                 texto = "Nunca estas solo, JAMAS estaras solo",
-                imagen = R.drawable.imagen1
+                imagen = R.drawable.acosador_1
             ),
             completada = false
         ),
@@ -78,7 +78,7 @@ object RepositorioPruebas {
             },
             cuerpo = Informacion(
                 texto = "Tú eres el asesino....",
-                imagen = R.drawable.imagen1
+                imagen = R.drawable.acosador_2
             ),
             completada = false
         )
