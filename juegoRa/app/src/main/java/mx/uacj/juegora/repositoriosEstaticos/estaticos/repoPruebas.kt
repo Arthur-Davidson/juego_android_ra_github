@@ -17,8 +17,8 @@ object RepositorioPruebas {
             id = 1,
             nombre = "¡Donde todo comienza...!",
             ubicacion = Location("proveedor").apply {
-                latitude = 31.620299889363597
-                longitude = -106.38162871344515
+                latitude = 31.74211709842721
+                longitude = -106.43233442043234
             },
             cuerpo = InformacionAudio(
                 texto = "Escuchas un mensaje extraño... Tal vez debas comenzar la investigación dentro del campus."
@@ -30,8 +30,8 @@ object RepositorioPruebas {
             id = 2,
             nombre = "Atras del edificio C",
             ubicacion = Location("proveedor").apply {
-                latitude = 31.620299889363597
-                longitude = -106.38162871344515
+                latitude = 31.7424
+                longitude = -106.4319
             },
             cuerpo = Informacion(
                 texto = "Nunca estas solo, JAMAS estaras solo",
@@ -44,8 +44,8 @@ object RepositorioPruebas {
             id = 3,
             nombre = "Por el edificio D",
             ubicacion = Location("proveedor").apply {
-                latitude = 31.620299889363597
-                longitude = -106.38162871344515
+                latitude = 31.742644
+                longitude = -106.4313187
             },
             cuerpo = InformacionAgitar(
                 textoOculto = "Hola que tal",
@@ -59,8 +59,8 @@ object RepositorioPruebas {
             id = 4,
             nombre = "La cafeteria",
             ubicacion = Location("proveedor").apply {
-                latitude = 31.620299889363597
-                longitude = -106.38162871344515
+                latitude = 31.74301171690772
+                longitude = -106.43250608737333
             },
             cuerpo = Informacion(
                 texto = "Prueba de texto para comprobar esto pista 3",
@@ -73,8 +73,8 @@ object RepositorioPruebas {
             id = 5,
             nombre = "¡CONOCE LA VERDAD!",
             ubicacion = Location("proveedor").apply {
-                latitude = 31.620299889363597
-                longitude = -106.38162871344515
+                latitude = 31.74211709842721
+                longitude = -106.43233442043234
             },
             cuerpo = Informacion(
                 texto = "Tú eres el asesino....",
