@@ -41,6 +41,7 @@ fun Principal(
 ){
     // Pantalla emergente de bienvenida a la Aplicacion
     var mostrarBienvenida by remember { mutableStateOf(!controlador_general.bienvenidaMostrada.value) }
+    var mostrar_cuadro_camara by remember { mutableStateOf(false) }
 
     if (mostrarBienvenida) {
         PantallaBienvenida {
@@ -53,7 +54,7 @@ fun Principal(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFC1E6F5))
+            .background(Color(0xFFC1E6F5.toLong()))
     ) {
 
         var mostrar_pantalla_generica by remember { mutableStateOf(true) }
@@ -66,7 +67,7 @@ fun Principal(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(130.dp)
-                .background(Color(0xFF0C2345))
+                .background(Color(0xFF0C2345.toLong()))
                 .padding(10.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -114,6 +115,12 @@ fun Principal(
 
                 val distancia_a_la_pista = ubicacion.value!!.distanceTo(pista.ubicacion)
 
+                if (distancia_a_la_pista < pista.distancia_minima && pista.id == 4
+                ) {
+
+                    mostrar_cuadro_camara = true
+                }
+
                 if(pista.id in 1..4 && distancia_a_la_pista < pista.distancia_maxima){
                     mostrar_pantalla_generica = false
 
@@ -124,58 +131,102 @@ fun Principal(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(Color(0xFF074D66), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                                .background(Color(0xFF074D66.toLong()), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
                                 .padding(12.dp)
                                 .padding(bottom = 10.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
 
-                            Text("La pista es:", color = Color(0xFFD4FFF4), fontSize = 19.sp, fontWeight = FontWeight.Bold)
+                            Text("La pista es:", color = Color(0xFFD4FFF4.toLong()), fontSize = 19.sp, fontWeight = FontWeight.Bold)
                             Text("${pista.nombre}", color = Color.White, fontSize = 19.sp, fontWeight = FontWeight.Bold)
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Text("La distancia a la pista es: ${distancia_a_la_pista} metros", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
-                            Text("El nivel de la distancia a la pista es ${nivel_de_distancia} metros", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
+                            Text("La distancia a la pista es: ${distancia_a_la_pista} metros", color = Color(0xFF7DDCFF.toLong()), fontWeight = FontWeight.Bold)
+                            Text("El nivel de la distancia a la pista es ${nivel_de_distancia} metros", color = Color(0xFF7DDCFF.toLong()), fontWeight = FontWeight.Bold)
 
                             Spacer(modifier = Modifier.height(8.dp))
 
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .background(Color(0xFFD4FFF4), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)),
+                                    .background(Color(0xFFD4FFF4.toLong()), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)),
                                 contentAlignment = Alignment.Center
                             ){
                                 if(nivel_de_distancia > 100){
-                                    Text("Estas frio todavia", color = Color(0xFF074D66), fontWeight = FontWeight.Bold, modifier = Modifier.padding(12.dp))
+                                    Text("Estas frio todavia", color = Color(0xFF074D66.toLong()), fontWeight = FontWeight.Bold, modifier = Modifier.padding(12.dp))
                                 }
                                 else if (nivel_de_distancia > 30){
-                                    Text("Te estas acercando", color = Color(0xFFA8A202), fontWeight = FontWeight.Bold, modifier = Modifier.padding(12.dp))
+                                    Text("Te estas acercando", color = Color(0xFFA8A202.toLong()), fontWeight = FontWeight.Bold, modifier = Modifier.padding(12.dp))
                                 }
                                 else if(nivel_de_distancia > 10){
-                                    Text("Muy cercas, sigue asi", color = Color(0xFF02A826), fontWeight = FontWeight.Bold, modifier = Modifier.padding(12.dp))
+                                    Text("Muy cercas, sigue asi", color = Color(0xFF02A826.toLong()), fontWeight = FontWeight.Bold, modifier = Modifier.padding(12.dp))
                                 }
                                 else if(distancia_a_la_pista < pista.distancia_minima){
-                                    Column(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .background(Color(0xFF94BDFF), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
-                                            .padding(12.dp)
-                                            .clickable {
-                                                controlador_general.seleccionar_pista(pista)
-                                                pista.completada = true
-                                                navegador.navigate("SelectorPantallaPista")
-                                            },
-                                        horizontalAlignment = Alignment.CenterHorizontally
-                                    ){
-                                        // --- Estado de la pista agregado ---
-                                        Text(
-                                            text = "Estado: ${if (pista.completada) "Completada ✅" else "Pendiente ❌"}",
-                                            fontWeight = FontWeight.Bold,
-                                            color = Color.White,
-                                            modifier = Modifier.padding(bottom = 8.dp)
-                                        )
-                                        Text("Capturar pista cercana", color = Color.White, fontWeight = FontWeight.Bold)
+                                    if (pista.id ==4 )
+                                    {
+                                        Column(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .background(Color(0xFF94BDFF.toLong()), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                                                .padding(12.dp)
+                                                .clickable {
+                                                    controlador_general.seleccionar_pista(pista)
+                                                    pista.completada = true
+                                                    navegador.navigate("OpcionNavegacionPantallaCamara")
+                                                },
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ){
+                                            Text(
+                                                text = "Estado: ${if (pista.completada) "Completada ✅" else "Pendiente ❌"}",
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color.White,
+                                                modifier = Modifier.padding(bottom = 8.dp)
+                                            )
+
+                                            Spacer(modifier = Modifier.height(12.dp))
+
+                                            // BOTÓN EXTRA → ABRIR CÁMARA
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .background(
+                                                        Color(0xFFA5FFCE.toLong()),
+                                                        shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
+                                                    )
+                                                    .padding(12.dp),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Text(
+                                                    "Abrir cámara",
+                                                    color = Color(0xFF003300.toLong()),
+                                                    fontWeight = FontWeight.Bold
+                                                )
+                                            }
+                                        }
+                                    }
+                                    else{
+                                        Column(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .background(Color(0xFF94BDFF.toLong()), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                                                .padding(12.dp)
+                                                .clickable {
+                                                    controlador_general.seleccionar_pista(pista)
+                                                    pista.completada = true
+                                                    navegador.navigate("SelectorPantallaPista")
+                                                },
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ){
+                                            // --- Estado de la pista agregado ---
+                                            Text(
+                                                text = "Estado: ${if (pista.completada) "Completada ✅" else "Pendiente ❌"}",
+                                                fontWeight = FontWeight.Bold,
+                                                color = Color.White,
+                                                modifier = Modifier.padding(bottom = 8.dp)
+                                            )
+                                            Text("Capturar pista cercana", color = Color.White, fontWeight = FontWeight.Bold)
+                                        }
                                     }
                                 }
                             }
@@ -195,7 +246,7 @@ fun Principal(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(Color(0xFF074D66), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                                .background(Color(0xFF074D66.toLong()), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
                                 .padding(12.dp)
                                 .padding(bottom = 10.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -207,13 +258,13 @@ fun Principal(
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .background(Color(0xFFD4FFF4), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)),
+                                    .background(Color(0xFFD4FFF4.toLong()), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)),
                                 contentAlignment = Alignment.Center
                             ){
                                 Column(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .background(Color(0xFF94BDFF), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                                        .background(Color(0xFF94BDFF.toLong()), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
                                         .padding(12.dp)
                                         .clickable {
                                             controlador_general.seleccionar_pista(pista)
@@ -244,13 +295,13 @@ fun Principal(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xFF7C1004), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                        .background(Color(0xFF7C1004.toLong()), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
                         .padding(12.dp)
                         .padding(bottom = 10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ){
                     Text("No te encuentras cercas de alguna pista por el momento ", color = Color(0xFF7A0B0BL), fontWeight = FontWeight.Bold)
-                    Text("Por favor sigue explorando", color = Color(0xFF7DDCFF), fontWeight = FontWeight.Bold)
+                    Text("Por favor sigue explorando", color = Color(0xFF7DDCFF.toLong()), fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -260,7 +311,7 @@ fun Principal(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(150.dp)
-                .background(Color(0xFF0C2345))
+                .background(Color(0xFF0C2345.toLong()))
                 .padding(15.dp),
             contentAlignment = Alignment.Center
         ){

@@ -13,27 +13,32 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class ServicioCamara: ViewModel(){
+class ServicioCamara: ViewModel() {
     private var _surface_vista_camara = MutableStateFlow<SurfaceRequest?>(null)
     var surface_vista_camara: StateFlow<SurfaceRequest?> = _surface_vista_camara
 
     private val previsualizacion = Preview.Builder().build().apply {
         setSurfaceProvider { nueva_peticion_de_surface ->
             _surface_vista_camara.update { nueva_peticion_de_surface }
-
         }
     }
+
+    // Getter público para que VistaCamara pueda usarlo
+    fun obtenerPreview(): Preview = previsualizacion
+    fun providePreviewView(previewView: androidx.camera.view.PreviewView) {
+        previsualizacion.setSurfaceProvider(previewView.surfaceProvider)
+    }
+
 
     suspend fun conectar_con_camara(contexto_aplicaicon: Context, dueño_del_ciclo_de_vida: LifecycleOwner){
         val proceso_camara_proveedor = ProcessCameraProvider.awaitInstance(contexto_aplicaicon)
 
         proceso_camara_proveedor.bindToLifecycle(
-            dueño_del_ciclo_de_vida, CameraSelector.DEFAULT_FRONT_CAMERA, previsualizacion
+            dueño_del_ciclo_de_vida, CameraSelector.DEFAULT_BACK_CAMERA, previsualizacion
         )
 
         try { awaitCancellation() } finally {
             proceso_camara_proveedor.unbindAll()
         }
     }
-
 }

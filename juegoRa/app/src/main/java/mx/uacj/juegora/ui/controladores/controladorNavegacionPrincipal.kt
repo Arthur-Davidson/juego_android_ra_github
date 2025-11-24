@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import mx.uacj.juegora.ui.atomos.VistaCamara
 import mx.uacj.juegora.ui.pantallas.Principal
 import mx.uacj.juegora.ui.pantallas.SeleccionarPantallaPista
 
@@ -19,6 +20,14 @@ fun NavegadorPrincipal(modificador: Modifier = Modifier){
 
         composable("SelectorPantallaPista") {
             SeleccionarPantallaPista(controlador_de_navegacion, modificador)
+        }
+
+        //NUEVO: Pantalla para la cámara con la MISMA estructura
+        composable("OpcionNavegacionPantallaCamara") {
+            VistaCamara(
+                servicio_de_camara = mx.uacj.juegora.viewModels.servicios.ServicioCamara(),
+                modificador
+            )
         }
     }
 }

@@ -30,8 +30,8 @@ data class InformacionAudio(
 data class InformacionAgitar(
     override val tipo: TiposDePistas = TiposDePistas.agitar_telefono,
     val textoOculto: String,
-    val meta1: Int = 5,
-    val meta2: Int = 10,
+    val meta1: Int = 25,
+    val meta2: Int = 50,
 ) : PistaGenerica {
     override val texto: String? = null
 }
