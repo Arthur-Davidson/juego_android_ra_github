@@ -15,7 +15,7 @@ object RepositorioPruebas {
     var pistas = listOf(
         Pista(
             id = 1,
-            nombre = "¡Donde todo comienza...!",
+            nombre = "¡Donde todo comienza...!", // Justo en el edificio V
             ubicacion = Location("proveedor").apply {
                 latitude = 31.74211709842721
                 longitude = -106.43233442043234
@@ -48,7 +48,7 @@ object RepositorioPruebas {
                 longitude = -106.4313187
             },
             cuerpo = InformacionAgitar(
-                textoOculto = "Hola que tal",
+                textoOculto = "La cuarta pista la encontraras despues de comer",
                 meta1 = 5,
                 meta2 = 10
             ),

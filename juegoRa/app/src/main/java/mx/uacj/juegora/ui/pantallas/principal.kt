@@ -246,7 +246,7 @@ fun Principal(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(Color(0xFF074D66.toLong()), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
+                                .background(Color(0xFF12B87E.toLong()), shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp))
                                 .padding(12.dp)
                                 .padding(bottom = 10.dp),
                             horizontalAlignment = Alignment.CenterHorizontally
