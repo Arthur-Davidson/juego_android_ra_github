@@ -48,7 +48,7 @@ object RepositorioPruebas {
                 longitude = -106.4313187
             },
             cuerpo = InformacionAgitar(
-                textoOculto = "La cuarta pista la encontraras despues de comer",
+                textoOculto = "La ultima pista la encontraras despues de recordar todo",
                 meta1 = 5,
                 meta2 = 10
             ),

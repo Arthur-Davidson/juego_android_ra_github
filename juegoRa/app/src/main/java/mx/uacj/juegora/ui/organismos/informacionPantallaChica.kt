@@ -45,13 +45,13 @@ fun InformacionVista(informacion_a_mostrar: Informacion){
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
                 Text(
-                    text = "Pista 2:",
+                    text = "Pista:",
                     color = Color.White,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "Atras del edificio C",
+                    text = "No todo es lo que parece",
                     color = Color.White,
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold

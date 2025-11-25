@@ -142,7 +142,7 @@ fun Principal(
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Text("La distancia a la pista es: ${distancia_a_la_pista} metros", color = Color(0xFF7DDCFF.toLong()), fontWeight = FontWeight.Bold)
+                            Text("Distancia a la pista: ${distancia_a_la_pista} metros", color = Color(0xFF7DDCFF.toLong()), fontWeight = FontWeight.Bold)
                             Text("El nivel de la distancia a la pista es ${nivel_de_distancia} metros", color = Color(0xFF7DDCFF.toLong()), fontWeight = FontWeight.Bold)
 
                             Spacer(modifier = Modifier.height(8.dp))

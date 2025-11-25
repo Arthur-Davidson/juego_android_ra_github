@@ -1,5 +1,6 @@
 package mx.uacj.juegora.ui.atomos
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,9 +22,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import mx.uacj.juegora.R
 import mx.uacj.juegora.modelos.InformacionAgitar
 import mx.uacj.juegora.ui.organismos.DetectorAgitamiento
 
@@ -84,8 +89,8 @@ fun VistaAgitarTelefono(info: InformacionAgitar) {
             )
 
             val mensaje = when {
-                shakeCount < info.meta1 -> "** ****** ***** ** ********* ****** ** *****"
-                shakeCount in info.meta1 until info.meta2 -> "*a *u*rt* p#*t# #a *nc*n*r#r#s *#*pu*s *e #*m*r"
+                shakeCount < info.meta1 -> "** ****** ***** ** ********* ****** ** ******* ****"
+                shakeCount in info.meta1 until info.meta2 -> "*a *u*rt* p#*t# #a *nc*n*r#r#s *#*pu*s *e re**r#ar *d#o"
                 else -> info.textoOculto
             }
 
@@ -113,6 +118,7 @@ fun VistaAgitarTelefono(info: InformacionAgitar) {
                     color = Color.White
                 )
                 Spacer(Modifier.height(20.dp))
+
 
                 Box(
                     modifier = Modifier
